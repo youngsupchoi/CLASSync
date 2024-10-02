@@ -2,7 +2,6 @@
 
 import { Button } from "flowbite-react";
 import { AiOutlineSearch } from "react-icons/ai";
-import backgroundImage from "../assets/images/landingBackgroundImage.png";
 import { useRecoilState } from "recoil";
 import {
   isSignInModalOpenAtom,
@@ -169,7 +168,7 @@ export default function HomePage() {
     <div
       className=" relative flex h-full min-h-screen items-center justify-center"
       style={{
-        backgroundImage: `url(${backgroundImage})`,
+        // backgroundImage: `url(${backgroundImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
