@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/HomePage";
 import Layout from "./components/Layout";
 import { SignInModal } from "./components/modals/SignInModal";
-import { ShareFeedbackModal } from "./components/modals/ShareFeedbackModal";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { isSignedInAtom } from "./recoil/IsSignedInAtom";
@@ -20,7 +19,7 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem("Token");
-    const userId = localStorage.getItem("chno_uid");
+    const userId = localStorage.getItem("CLASSync_uid");
     if (userId) {
       setIsSignedIn(true);
     }
@@ -65,7 +64,6 @@ function App() {
         <Route path="/mobile-landing" element={<MobileLandingPage />} />
       </Routes>
       <SignInModal />
-      <ShareFeedbackModal />
     </Router>
   );
 }

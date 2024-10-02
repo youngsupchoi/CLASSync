@@ -7,7 +7,7 @@ import {
   HiOutlineQuestionMarkCircle,
   HiOutlineUserCircle,
 } from "react-icons/hi";
-import Chno_logo from "../assets/images/Chno_logo.png";
+import ClASSync_logo from "../assets/images/ClASSync_logo.png";
 import { SidebarCustomTheme } from "../theme/customFlowbiteTheme";
 import { HomeIcon } from "../assets/icons/HomeIcon";
 import { BookIcon } from "../assets/icons/BookIcon";
@@ -16,7 +16,6 @@ import SignInButton from "./SignInButton";
 import { isSidebarCollapsedAtom } from "../recoil/IsSidebarCollapesd";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { isSignedInAtom } from "../recoil/IsSignedInAtom";
-import ShareFeedbackButton from "./ShareFeedbackButton";
 import UserInfoComponent from "./UserInfoComponent";
 import { noteDataAtom, noteListAtom } from "../recoil/noteDataAtom";
 import NoteTitleComponent from "./NoteTitleComponent";
@@ -67,7 +66,7 @@ export function SidebarComponent() {
   };
 
   useEffect(() => {
-    const userId = localStorage.getItem("chno_uid");
+    const userId = localStorage.getItem("CLASSync_uid");
     if (isSignedIn && userId) {
       getAllNotes(userId).then((data) => {
         const formattedNotes = data.map((note: any) => ({
@@ -95,12 +94,12 @@ export function SidebarComponent() {
           className={`flex items-center text-xl font-bold ${isSidebarCollapsed ? "py-4 pl-3" : "p-4"}`}
         >
           <img
-            src={Chno_logo}
-            alt="Chno logo"
-            className={` ${isSidebarCollapsed ? "h-6 w-6" : "h-8 w-8"}`}
+            src={ClASSync_logo}
+            alt="ClASSync logo"
+            className={` ${isSidebarCollapsed ? "h-3 w-8" : "h-8 w-20"}`}
           />
           {!isSidebarCollapsed && (
-            <span className="ml-2 text-[#9EA7B0]">Chno</span>
+            <span className="ml-2 text-[#9EA7B0]"> </span>
           )}
         </button>
         <Sidebar.Items>
@@ -199,7 +198,6 @@ export function SidebarComponent() {
                 </Dropdown>
               </Sidebar.Item>
             ) : null}
-            {isSidebarCollapsed ? null : <ShareFeedbackButton />}
           </Sidebar.ItemGroup>
         </Sidebar.Items>
       </Sidebar>

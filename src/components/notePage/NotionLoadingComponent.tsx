@@ -63,7 +63,7 @@ export const NotionLoadingComponent = () => {
         {progress.toFixed(2)}%
       </div>
       <div className="mt-2">
-        <div className="mb-4 text-lg font-bold">Writing a TechNote...</div>
+        <div className="mb-4 text-lg font-bold">노트를 제작중입니다.</div>
         <strong>{formatTime(time)}</strong> min left(
         <strong>{progress.toFixed(2)}%</strong>) <br />
         <div>We appreciate your patience.</div>

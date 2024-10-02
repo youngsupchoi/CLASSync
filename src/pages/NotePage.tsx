@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { noteDataAtom, noteListAtom } from "../recoil/noteDataAtom";
 import NotionSection from "../components/notePage/NotionSection";
-import GPTSection from "../components/notePage/GPTSection";
+import SummarySection from "../components/notePage/SummarySection";
 import NotePageHeader from "../components/notePage/NotePageHeader";
 import { useEffect } from "react";
 import axios from "axios";
@@ -84,10 +84,13 @@ export default function NotePage() {
     <div className="relative flex h-full min-h-screen flex-col">
       <NotePageHeader />
       <div className="flex flex-1">
-        <div className="flex w-2/3">
+        <div className="flex w-1/2">
           <NotionSection pageId={pageId} />
         </div>
-        <GPTSection />
+        <div className="flex w-1/2">
+          <NotionSection pageId={pageId} />
+        </div>
+        {/* <SummarySection /> */}
       </div>
     </div>
   );

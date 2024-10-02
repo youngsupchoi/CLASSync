@@ -14,21 +14,6 @@ export const isSignInModalOpenAtom = atom({
   default: false,
 });
 
-export const isTutorialModalOpenAtom = atom({
-  key: "isTutorialModalOpen",
-  default: false,
-});
-
-export const tutorialModalContentAtom = atom({
-  key: "tutorialModalContent",
-  default: "",
-});
-
-export const isExamplesModalOpenAtom = atom({
-  key: "isExamplesModalOpen",
-  default: false,
-});
-
 export const examplesAtom = atom<Examples[]>({
   key: "examples",
   default: [

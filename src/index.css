@@ -30,7 +30,7 @@
   border-radius: 10px;
 }
 
-/* GPTSection에 그림자와 테두리 반경 추가 */
+/* summarySection에 그림자와 테두리 반경 추가 */
 .fixed {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 8px;

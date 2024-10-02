@@ -41,8 +41,3 @@ export const noteDataAtom = atom<NoteData>({
     gptData: [],
   },
 });
-
-export const gptOpenStateAtom = atom<number[]>({
-  key: "GPTOpenStateAtom",
-  default: [],
-});

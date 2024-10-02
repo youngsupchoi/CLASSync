@@ -8,7 +8,7 @@ import { jwtDecode } from "jwt-decode";
 import { useEffect } from "react";
 import { isSignedInAtom } from "../../recoil/IsSignedInAtom";
 import { userInfoAtom } from "../../recoil/userInfoAtom";
-import Chno_logo2 from "../../assets/images/Chno_logo2.png";
+import ClASSync_logo2 from "../../assets/images/ClASSync_logo2.png";
 import { createUser } from "../../api/userApi";
 import { getAllNotes } from "../../api/noteApi";
 import { noteListAtom } from "../../recoil/noteDataAtom";
@@ -63,7 +63,7 @@ export function SignInModal() {
     // API 호출
     createUser(user)
       .then((data) => {
-        localStorage.setItem("chno_uid", data.id);
+        localStorage.setItem("CLASSync_uid", data.id);
         console.log("유저 생성 또는 정보 반환:", data);
         setUserInfo({
           id: data.id,
@@ -161,17 +161,17 @@ export function SignInModal() {
         <Modal.Body>
           <div className="flex flex-col items-center space-y-6">
             <img
-              src={Chno_logo2}
-              alt="Chno logo"
+              src={ClASSync_logo2}
+              alt="ClASSync logo"
               className="h-auto w-24 pt-8"
             />
             <div className="flex flex-col items-center">
-              <h3 className="text-lg font-light text-gray-900 dark:text-white">
-                Sign up now and try unlimited
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                3초만에 로그인하고
               </h3>
               <div className="flex space-x-1">
-                <h3 className="text-lg font-light text-gray-900 dark:text-white">
-                  summarization for free
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  모든 수업을 쉽게 기록해보세요
                 </h3>
               </div>
             </div>
@@ -186,17 +186,17 @@ export function SignInModal() {
             </div>
             <div className="flex justify-between text-sm font-medium text-gray-500 dark:text-gray-300">
               <a
-                href="https://harmonious-authority-301.notion.site/Terms-of-Service-46455da80715458fb98e060cb3b92181?pvs=4"
+                href="https://harmonious-authority-301.notion.site/113bdc870baa80f1a13cef9005274786?pvs=4"
                 className="text-xs font-normal text-[#A1A1AA] hover:underline dark:text-cyan-500"
               >
-                Term of Service
+                서비스 이용약관
               </a>
               &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
               <a
-                href="https://harmonious-authority-301.notion.site/Privacy-Policy-f241cf2d76af4ff0976b937fed1b86ff?pvs=4"
+                href="https://harmonious-authority-301.notion.site/113bdc870baa803a9b73cb9bde370937?pvs=4"
                 className="text-xs font-normal text-[#A1A1AA] hover:underline dark:text-cyan-500"
               >
-                Privacy Policy
+                개인정보 처리방침
               </a>
             </div>
           </div>
