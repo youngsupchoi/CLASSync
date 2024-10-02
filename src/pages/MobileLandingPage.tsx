@@ -110,7 +110,7 @@ const MobileLandingPage: React.FC = () => {
             className="focus:shadow-outline mb-4 w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 focus:outline-none"
             id="email"
             type="email"
-            placeholder="chnoai@gmail.com"
+            placeholder="classync@gmail.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             onKeyDown={handleKeyDown}
