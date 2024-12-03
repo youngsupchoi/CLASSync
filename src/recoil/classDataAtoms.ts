@@ -22,7 +22,7 @@ export const classDataAtom = atom<ClassData>({
 });
 
 export const classListAtom = atom<ClassData[]>({
-  key: "classDataAtom",
+  key: "classListAtom",
   default: [
     {
       id: 1,

@@ -106,7 +106,7 @@ const NoteListPage = () => {
                   : "-"}
               </Table.Cell>
               <Table.Cell>
-                <Link to={`/recording/${recording.recordingId}`}>
+                <Link to={`/record/${recording.recordingId}`}>
                   <Button
                     size="xs"
                     gradientDuoTone="purpleToBlue"

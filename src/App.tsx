@@ -16,6 +16,7 @@ import { CreateModal } from "./components/modals/createModal";
 import NoteCreatePage from "./pages/NoteCreatePage";
 import { Toaster } from "react-hot-toast";
 import NoteListPage from "./pages/NoteListPage";
+import RecordPage from "./pages/RecordPage";
 
 function App() {
   const setIsSignedIn = useSetRecoilState(isSignedInAtom);
@@ -80,6 +81,14 @@ function App() {
             element={
               <Layout>
                 <NoteListPage />
+              </Layout>
+            }
+          />
+          <Route
+            path="/record/:recordingId"
+            element={
+              <Layout>
+                <RecordPage />
               </Layout>
             }
           />

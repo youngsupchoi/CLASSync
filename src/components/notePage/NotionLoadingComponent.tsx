@@ -5,7 +5,11 @@ import WritingGif from "../../assets/animations/writing_animation.json";
 import Lottie from "lottie-react";
 
 // LoadingComponent
-export const NotionLoadingComponent = () => {
+export const NotionLoadingComponent = ({
+  created_at,
+}: {
+  created_at: string;
+}) => {
   const [progress, setProgress] = useState(0);
   const [time, setTime] = useState(0); // 초기 시간 값
   const noteData = useRecoilState(noteDataAtom);
@@ -18,13 +22,13 @@ export const NotionLoadingComponent = () => {
   };
 
   useEffect(() => {
-    if (noteData.length > 0) {
-      const createdAt = new Date(noteData[0].created_at).getTime();
+    if (created_at) {
+      const createdAt = new Date(created_at).getTime();
 
       const updateProgressAndTime = () => {
         const now = new Date().getTime();
         const timeElapsed = now - createdAt;
-        const totalSecondsIn24Hours = 3 * 60 * 60 * 1000;
+        const totalSecondsIn24Hours = 0.5 * 60 * 60 * 1000;
         const percentage = Math.min(
           (timeElapsed / totalSecondsIn24Hours) * 100,
           100,
@@ -40,7 +44,7 @@ export const NotionLoadingComponent = () => {
 
       return () => clearInterval(interval); // 컴포넌트 언마운트 시 interval 클리어
     }
-  }, [noteData]);
+  }, [created_at]);
 
   return (
     <div className="flex w-full flex-col items-center justify-center px-8 pb-20 text-center">

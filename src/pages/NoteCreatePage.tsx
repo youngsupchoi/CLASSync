@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { noteDataAtom } from "../recoil/noteDataAtom";
+import { noteDataAtom, createNoteDataAtom } from "../recoil/noteDataAtom";
 import NotionSection from "../components/notePage/NotionSection";
 
 import NotePageHeader from "../components/notePage/NotePageHeader";
@@ -16,6 +16,8 @@ export default function NoteCreatePage() {
   const { classId } = useParams();
 
   const [noteData, setNoteData] = useRecoilState(noteDataAtom);
+  const [createNoteData, setCreateNoteData] =
+    useRecoilState(createNoteDataAtom);
   const [selectedTab, setSelectedTab] = useState("summary");
   useEffect(() => {
     const fetchMessages = async () => {
@@ -61,7 +63,10 @@ export default function NoteCreatePage() {
 
   return (
     <div className="relative flex h-full min-h-screen flex-col">
-      <NoteCreatePageHeader />
+      <NoteCreatePageHeader
+        className={createNoteData.class_name}
+        title={createNoteData.title}
+      />
       <div className="flex flex-1">
         <div className="flex w-1/2 flex-col border border-gray-200">
           <div className="border-b border-gray-200  p-2">
@@ -96,7 +101,7 @@ export default function NoteCreatePage() {
               </span>
             </div>
           </div>
-          <NotionLoadingComponent />
+          <NotionLoadingComponent created_at={createNoteData.created_at} />
         </div>
         {/* <SummarySection /> */}
       </div>

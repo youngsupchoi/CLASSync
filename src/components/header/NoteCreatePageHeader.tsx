@@ -1,14 +1,16 @@
 // src/components/NotePageHeader.tsx
 // import { Link } from "react-router-dom";
 // import { FaDownload } from "react-icons/fa";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { createNoteDataAtom } from "../../recoil/noteDataAtom";
+import { useSetRecoilState } from "recoil";
 import { isShareFeedbackModalOpenAtom } from "../../recoil/modalAtoms";
 
-const NoteCreatePageHeader = () => {
-  const noteData = useRecoilValue(createNoteDataAtom);
-  const className = noteData.class_name;
-  const title = noteData.title;
+const NoteCreatePageHeader = ({
+  className,
+  title,
+}: {
+  className: string;
+  title: string;
+}) => {
   const setIsShareFeedbackModalOpen = useSetRecoilState(
     isShareFeedbackModalOpenAtom,
   );
