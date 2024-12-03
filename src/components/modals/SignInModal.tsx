@@ -67,9 +67,9 @@ export function SignInModal() {
         console.log("유저 생성 또는 정보 반환:", data);
         setUserInfo({
           id: data.id,
-          given_name: data.given_name,
-          family_name: data.family_name,
-          email: data.email,
+          given_name: String(user.given_name),
+          family_name: String(user.family_name),
+          email: String(user.email),
         });
 
         // 익스텐션에서 온 경우 부모 창에 데이터 전송

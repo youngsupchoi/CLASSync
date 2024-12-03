@@ -25,6 +25,7 @@ import { useEffect } from "react";
 import { userInfoAtom } from "../recoil/userInfoAtom";
 import { getAllNotes } from "../api/noteApi";
 import ReactGA from "react-ga4";
+import { classListAtom, classDataAtom } from "../recoil/classDataAtoms";
 
 export function SidebarComponent() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useRecoilState(
@@ -32,7 +33,8 @@ export function SidebarComponent() {
   );
   const setIsSignInModalOpen = useSetRecoilState(isSignInModalOpenAtom);
   const isSignedIn = useRecoilValue(isSignedInAtom);
-  const noteTitleList = useRecoilValue(noteListAtom);
+  const classList = useRecoilValue(classListAtom);
+  const setClassData = useSetRecoilState(classDataAtom);
   const [userInfo] = useRecoilState(userInfoAtom);
   const navigate = useNavigate();
   const setNoteList = useSetRecoilState(noteListAtom);
@@ -46,15 +48,19 @@ export function SidebarComponent() {
   };
 
   const handleNoteClick = (note: any) => {
-    setNoteData({
-      id: note.id,
-      title: note.title,
-      conversation_id: note.conversation_id,
-      notion_page_id: note.notion_page_id,
-      created_at: note.created_at,
-      gptData: note.gptData,
-    });
-    navigate(note.url);
+    setClassData(note);
+
+    // setRecordList(note);
+    navigate(`/notelist/${note.id}/${note.title}`);
+    // setNoteData({
+    //   id: note.id,
+    //   title: note.title,
+    //   conversation_id: note.conversation_id,
+    //   notion_page_id: note.notion_page_id,
+    //   created_at: note.created_at,
+    //   gptData: note.gptData,
+    // });
+    // navigate(note.url);
   };
 
   const handleSidebarItemClick = (label: string) => {
@@ -125,7 +131,7 @@ export function SidebarComponent() {
             ) : (
               <Sidebar.Collapse icon={BookIcon} label="My knowledge">
                 {!isSidebarCollapsed &&
-                  noteTitleList.map((note) => (
+                  classList.map((note) => (
                     <Sidebar.Item
                       key={note.id}
                       onClick={() => {
@@ -140,6 +146,22 @@ export function SidebarComponent() {
                   ))}
               </Sidebar.Collapse>
             )}
+            <Sidebar.Collapse icon={BookIcon} label="My knowledge">
+              {!isSidebarCollapsed &&
+                classList.map((note) => (
+                  <Sidebar.Item
+                    key={note.id}
+                    onClick={() => {
+                      handleNoteClick(note);
+                      handleSidebarItemClick(
+                        `${userInfo.email} - ${note.title}`,
+                      );
+                    }}
+                  >
+                    <NoteTitleComponent title={note.title} />
+                  </Sidebar.Item>
+                ))}
+            </Sidebar.Collapse>
 
             {isSidebarCollapsed || isSignedIn ? null : <SignInButton />}
           </Sidebar.ItemGroup>

@@ -3,17 +3,21 @@ import { HiPlus } from "react-icons/hi";
 import { isSidebarCollapsedAtom } from "../recoil/IsSidebarCollapesd";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { isSignedInAtom } from "../recoil/IsSignedInAtom";
-import { isSignInModalOpenAtom } from "../recoil/modalAtoms";
+import {
+  isCreateModalOpenAtom,
+  isSignInModalOpenAtom,
+} from "../recoil/modalAtoms";
 
 export default function NewKnowledgeButton() {
   const isSidebarCollapsed = useRecoilValue(isSidebarCollapsedAtom);
   const isSignedIn = useRecoilValue(isSignedInAtom);
   const setIsSignInModalOpen = useSetRecoilState(isSignInModalOpenAtom);
+  const setIsCreateModalOpen = useSetRecoilState(isCreateModalOpenAtom);
 
   const clickAddKnowledgeButton = () => {
     // login 되어있는 상태에서는 홈으로 이동, 그렇지않을때는 로그인 모달을 띄움
     if (isSignedIn) {
-      window.location.href = "/";
+      setIsCreateModalOpen(true);
     } else {
       setIsSignInModalOpen(true);
     }

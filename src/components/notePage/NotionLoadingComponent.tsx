@@ -24,7 +24,7 @@ export const NotionLoadingComponent = () => {
       const updateProgressAndTime = () => {
         const now = new Date().getTime();
         const timeElapsed = now - createdAt;
-        const totalSecondsIn24Hours = 24 * 60 * 60 * 1000;
+        const totalSecondsIn24Hours = 3 * 60 * 60 * 1000;
         const percentage = Math.min(
           (timeElapsed / totalSecondsIn24Hours) * 100,
           100,
@@ -63,7 +63,9 @@ export const NotionLoadingComponent = () => {
         {progress.toFixed(2)}%
       </div>
       <div className="mt-2">
-        <div className="mb-4 text-lg font-bold">노트를 제작중입니다.</div>
+        <div className="mb-4 text-lg font-bold">
+          AI가 실시간으로 학습자료를 제작중입니다. 잠시만 기다려주세요
+        </div>
         <strong>{formatTime(time)}</strong> min left(
         <strong>{progress.toFixed(2)}%</strong>) <br />
         <div>We appreciate your patience.</div>

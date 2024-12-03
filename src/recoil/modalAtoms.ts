@@ -14,3 +14,8 @@ export const isShareFeedbackModalOpenAtom = atom<boolean>({
   key: "IsShareFeedbackModalOpenAtom",
   default: false,
 });
+
+export const isCreateModalOpenAtom = atom<boolean>({
+  key: "IsCreateModalOpenAtom",
+  default: false,
+});

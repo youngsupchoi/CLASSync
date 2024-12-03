@@ -12,6 +12,10 @@ import { userInfoAtom } from "./recoil/userInfoAtom";
 import NotePage from "./pages/NotePage";
 import MobileLandingPage from "./pages/MobileLandingPage";
 import MobileRedirect from "./components/MobileRedirect"; // 새로 추가한 컴포넌트 임포트
+import { CreateModal } from "./components/modals/createModal";
+import NoteCreatePage from "./pages/NoteCreatePage";
+import { Toaster } from "react-hot-toast";
+import NoteListPage from "./pages/NoteListPage";
 
 function App() {
   const setIsSignedIn = useSetRecoilState(isSignedInAtom);
@@ -42,29 +46,49 @@ function App() {
   }, [setIsSignedIn, setUserInfo]);
 
   return (
-    <Router>
-      <MobileRedirect /> {/* 모바일 리다이렉트를 위한 컴포넌트 추가 */}
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Layout>
-              <Home />
-            </Layout>
-          }
-        />
-        <Route
-          path="/note/:noteId"
-          element={
-            <Layout>
-              <NotePage />
-            </Layout>
-          }
-        />
-        <Route path="/mobile-landing" element={<MobileLandingPage />} />
-      </Routes>
-      <SignInModal />
-    </Router>
+    <>
+      <Toaster position="top-center" />
+      <Router>
+        <MobileRedirect /> {/* 모바일 리다이렉트를 위한 컴포넌트 추가 */}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Layout>
+                <Home />
+              </Layout>
+            }
+          />
+          <Route
+            path="/note/:noteId"
+            element={
+              <Layout>
+                <NotePage />
+              </Layout>
+            }
+          />
+          <Route
+            path="/notecreate/:classId"
+            element={
+              <Layout>
+                <NoteCreatePage />
+              </Layout>
+            }
+          />
+          <Route
+            path="/notelist/:classId/:classTitle"
+            element={
+              <Layout>
+                <NoteListPage />
+              </Layout>
+            }
+          />
+          {/* <Route path="/mobile-landing" element={<MobileLandingPage />} /> */}
+        </Routes>
+        <SignInModal />
+        <CreateModal />
+      </Router>
+    </>
   );
 }
 

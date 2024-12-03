@@ -24,6 +24,13 @@ interface NoteData {
     answer: string;
   }>;
 }
+interface CreateNoteData {
+  id: string;
+  class_id: number;
+  class_name: string;
+  title: string;
+  created_at: string;
+}
 
 export const noteListAtom = atom<Note[]>({
   key: "NoteListAtom",
@@ -39,5 +46,16 @@ export const noteDataAtom = atom<NoteData>({
     created_at: "",
     notion_page_id: "",
     gptData: [],
+  },
+});
+
+export const createNoteDataAtom = atom<CreateNoteData>({
+  key: "CreateNoteDataAtom",
+  default: {
+    id: "",
+    title: "",
+    created_at: "",
+    class_id: 0,
+    class_name: "",
   },
 });
