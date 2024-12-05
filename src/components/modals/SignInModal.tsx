@@ -63,10 +63,10 @@ export function SignInModal() {
     // API 호출
     createUser(user)
       .then((data) => {
-        localStorage.setItem("CLASSync_uid", data.id);
+        localStorage.setItem("CLASSync_uid", data);
         console.log("유저 생성 또는 정보 반환:", data);
         setUserInfo({
-          id: data.id,
+          id: data,
           given_name: String(user.given_name),
           family_name: String(user.family_name),
           email: String(user.email),

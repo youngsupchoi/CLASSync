@@ -1,6 +1,6 @@
 // src/components/modals/SignInModal.tsx
 import { Button, Modal } from "flowbite-react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { isCreateModalOpenAtom } from "../../recoil/modalAtoms";
 import { LoginModalTheme } from "../../theme/loginModalTheme";
 import { GoogleLogin } from "@react-oauth/google";
@@ -19,6 +19,8 @@ import {
 import ReactGA from "react-ga4";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { createClass } from "../../api/createClass";
+import { classListAtom } from "../../recoil/classDataAtoms";
 
 export function CreateModal() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useRecoilState(
@@ -27,6 +29,7 @@ export function CreateModal() {
   const [, setNoteList] = useRecoilState(noteListAtom);
   const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
   const [noteData, setNoteData] = useRecoilState(noteDataAtom);
+  const classList = useRecoilValue(classListAtom);
   const [createNoteData, setCreateNoteData] =
     useRecoilState(createNoteDataAtom);
   const navigate = useNavigate();
@@ -41,52 +44,52 @@ export function CreateModal() {
     }
   }, []);
 
-  const className = [
-    {
-      id: 3,
-      userId: 0,
-      title: "데이터 베이스",
-      description: "string",
-      createdAt: "2024-11-24T01:17:41.986Z",
-      updatedAt: "2024-11-24T01:17:41.986Z",
-    },
-    {
-      id: 1,
-      userId: 0,
-      title: "컴퓨터 네트워크",
-      description: "string",
-      createdAt: "2024-11-24T01:17:41.986Z",
-      updatedAt: "2024-11-24T01:17:41.986Z",
-    },
-    {
-      id: 2,
-      userId: 0,
-      title: "데이터 베이스 시스템",
-      description: "string",
-      createdAt: "2024-11-24T01:17:41.986Z",
-      updatedAt: "2024-11-24T01:17:41.986Z",
-    },
-    {
-      id: 4,
-      userId: 0,
-      title: "컴퓨터 구조",
-      description: "string",
-      createdAt: "2024-11-24T01:17:41.986Z",
-      updatedAt: "2024-11-24T01:17:41.986Z",
-    },
-    {
-      id: 5,
-      userId: 0,
-      title: "시스템 프로그래밍",
-      description: "string",
-      createdAt: "2024-11-24T01:17:41.986Z",
-      updatedAt: "2024-11-24T01:17:41.986Z",
-    },
-  ];
+  // const className = [
+  //   {
+  //     id: 3,
+  //     userId: 0,
+  //     title: "데이터 베이스",
+  //     description: "string",
+  //     createdAt: "2024-11-24T01:17:41.986Z",
+  //     updatedAt: "2024-11-24T01:17:41.986Z",
+  //   },
+  //   {
+  //     id: 1,
+  //     userId: 0,
+  //     title: "컴퓨터 네트워크",
+  //     description: "string",
+  //     createdAt: "2024-11-24T01:17:41.986Z",
+  //     updatedAt: "2024-11-24T01:17:41.986Z",
+  //   },
+  //   {
+  //     id: 2,
+  //     userId: 0,
+  //     title: "데이터 베이스 시스템",
+  //     description: "string",
+  //     createdAt: "2024-11-24T01:17:41.986Z",
+  //     updatedAt: "2024-11-24T01:17:41.986Z",
+  //   },
+  //   {
+  //     id: 4,
+  //     userId: 0,
+  //     title: "컴퓨터 구조",
+  //     description: "string",
+  //     createdAt: "2024-11-24T01:17:41.986Z",
+  //     updatedAt: "2024-11-24T01:17:41.986Z",
+  //   },
+  //   {
+  //     id: 5,
+  //     userId: 0,
+  //     title: "시스템 프로그래밍",
+  //     description: "string",
+  //     createdAt: "2024-11-24T01:17:41.986Z",
+  //     updatedAt: "2024-11-24T01:17:41.986Z",
+  //   },
+  // ];
 
   const handleCreateClass = () => {
     // 입력된 수업 이름이 이미 존재하는지 확인
-    const isDuplicate = className.some(
+    const isDuplicate = classList.some(
       (item) => item.title === createNoteData.class_name,
     );
 
@@ -94,33 +97,41 @@ export function CreateModal() {
       toast.error("이미 존재하는 수업 이름입니다.");
       return;
     }
+    createClass(createNoteData.class_name).then(() => {
+      navigate("/");
+      onCloseModal();
+      window.location.reload();
+      toast.success(`${createNoteData.class_name} 수업 생성이 완료되었습니다.`);
+    });
 
-    setCreateNoteData({
-      id: "",
-      class_id: 0,
-      class_name: createNoteData.class_name,
-      title:
-        new Date().toLocaleTimeString("ko-KR", {
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        }) + " 생성된 수업 기록",
-      created_at: new Date().toISOString(),
-    });
-    setNoteData({
-      class_id: 0,
-      class_name: createNoteData.class_name,
-      title:
-        new Date().toLocaleTimeString("ko-KR", {
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        }) + " 생성된 수업 기록",
-      created_at: new Date().toISOString(),
-    });
-    navigate("/");
-    onCloseModal();
-    toast.success(`${createNoteData.class_name} 수업 생성이 완료되었습니다.`);
+    // setCreateNoteData({
+    //   id: "",
+    //   class_id: 0,
+    //   class_name: createNoteData.class_name,
+    //   title:
+    //     new Date().toLocaleTimeString("ko-KR", {
+    //       hour: "2-digit",
+    //       minute: "2-digit",
+    //       second: "2-digit",
+    //     }) + " 생성된 수업 기록",
+    //   created_at: new Date().toISOString(),
+    // });
+    // setNoteData({
+    //   class_id: 0,
+    //   class_name: createNoteData.class_name,
+    //   title:
+    //     new Date().toLocaleTimeString("ko-KR", {
+    //       hour: "2-digit",
+    //       minute: "2-digit",
+    //       second: "2-digit",
+    //     }) + " 생성된 수업 기록",
+    //   created_at: new Date().toISOString(),
+    // });
+    // navigate("/");
+
+    // onCloseModal();
+    // window.location.reload();
+    // toast.success(`${createNoteData.class_name} 수업 생성이 완료되었습니다.`);
   };
 
   return (
@@ -162,7 +173,7 @@ export function CreateModal() {
                 </Button>
               </div>
 
-              {className.map((item) => (
+              {classList.map((item) => (
                 <Button
                   key={item.id}
                   className="w-full"

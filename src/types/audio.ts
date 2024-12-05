@@ -5,3 +5,9 @@ export interface IAudioRecorderService {
   ) => void;
   stopRecording: () => void;
 }
+
+declare global {
+  interface Window {
+    webkitAudioContext: typeof AudioContext;
+  }
+}

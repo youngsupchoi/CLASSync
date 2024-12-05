@@ -26,6 +26,7 @@ import { userInfoAtom } from "../recoil/userInfoAtom";
 import { getAllNotes } from "../api/noteApi";
 import ReactGA from "react-ga4";
 import { classListAtom, classDataAtom } from "../recoil/classDataAtoms";
+import { getAllClass } from "../api/getAllClass";
 
 export function SidebarComponent() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useRecoilState(
@@ -34,6 +35,7 @@ export function SidebarComponent() {
   const setIsSignInModalOpen = useSetRecoilState(isSignInModalOpenAtom);
   const isSignedIn = useRecoilValue(isSignedInAtom);
   const classList = useRecoilValue(classListAtom);
+  const setClassList = useSetRecoilState(classListAtom);
   const setClassData = useSetRecoilState(classDataAtom);
   const [userInfo] = useRecoilState(userInfoAtom);
   const navigate = useNavigate();
@@ -41,6 +43,13 @@ export function SidebarComponent() {
   const setNoteData = useSetRecoilState(noteDataAtom);
 
   const toggleSidebar = () => setIsSidebarCollapsed(!isSidebarCollapsed);
+
+  useEffect(() => {
+    getAllClass().then((data) => {
+      console.log(data);
+      setClassList(data);
+    });
+  }, [userInfo, setClassList]);
 
   const openSignInModal = () => {
     if (isSignedIn) return;
@@ -146,22 +155,6 @@ export function SidebarComponent() {
                   ))}
               </Sidebar.Collapse>
             )}
-            <Sidebar.Collapse icon={BookIcon} label="My knowledge">
-              {!isSidebarCollapsed &&
-                classList.map((note) => (
-                  <Sidebar.Item
-                    key={note.id}
-                    onClick={() => {
-                      handleNoteClick(note);
-                      handleSidebarItemClick(
-                        `${userInfo.email} - ${note.title}`,
-                      );
-                    }}
-                  >
-                    <NoteTitleComponent title={note.title} />
-                  </Sidebar.Item>
-                ))}
-            </Sidebar.Collapse>
 
             {isSidebarCollapsed || isSignedIn ? null : <SignInButton />}
           </Sidebar.ItemGroup>

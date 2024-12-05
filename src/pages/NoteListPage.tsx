@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Table, Button } from "flowbite-react";
 import { HiOutlineDocumentText } from "react-icons/hi";
+import { getAllRecordForClass } from "../api/getAllRecordForClass";
 
 interface Recording {
   recordingId: number;
@@ -21,35 +22,29 @@ const NoteListPage = () => {
   const [recordings, setRecordings] = useState<Recording[]>([]);
 
   useEffect(() => {
-    // API 호출 또는 로컬 스토리지에서 녹음 데이터 가져오기
-    const fetchRecordings = () => {
-      console.log(`Fetching recordings for classId: ${classId}`);
-      // 예시 데이터
-      const dummyRecordings = [
-        {
-          recordingId: 1,
-          recordingTitle: "2024-11-27T23:22:12.822536 녹음",
-          classId: 1,
-          classTitle: "데이터베이스",
-          preTranscript: "람다 내에서 사용되는 외부 변수는...",
-          recordedAt: "2024-11-27T14:22:12.822613",
-          durationMinutes: 62,
-        },
-        {
-          recordingId: 2,
-          recordingTitle: "2024-11-28T01:56:09.836403 녹음",
-          classId: 1,
-          classTitle: "데이터베이스",
-          preTranscript: "이 영상은 유료광고를 포함하고 있습니다.",
-          recordedAt: "2024-11-27T16:56:09.836843",
-          durationMinutes: 53,
-        },
-      ];
-      setRecordings(dummyRecordings);
-    };
-
-    fetchRecordings();
+    getAllRecordForClass(Number(classId)).then((data) => {
+      setRecordings(data);
+    });
   }, [classId]);
+
+  // {
+  //   recordingId: 1,
+  //   recordingTitle: "2024-11-27T23:22:12.822536 녹음",
+  //   classId: 1,
+  //   classTitle: "데이터베이스",
+  //   preTranscript: "람다 내에서 사용되는 외부 변수는...",
+  //   recordedAt: "2024-11-27T14:22:12.822613",
+  //   durationMinutes: 62,
+  // },
+  // {
+  //   recordingId: 2,
+  //   recordingTitle: "2024-11-28T01:56:09.836403 녹음",
+  //   classId: 1,
+  //   classTitle: "데이터베이스",
+  //   preTranscript: "이 영상은 유료광고를 포함하고 있습니다.",
+  //   recordedAt: "2024-11-27T16:56:09.836843",
+  //   durationMinutes: 53,
+  // },
 
   return (
     <div className="container mx-auto px-12 pb-16 pt-8">

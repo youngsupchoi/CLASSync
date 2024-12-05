@@ -17,13 +17,14 @@ axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 export const createUser = async (user: any) => {
   try {
     const response = await axios.post(
-      `https://monthly-madge-choco-planner-59fb550a.koyeb.app/api/user/create`,
+      `https://monthly-madge-choco-planner-59fb550a.koyeb.app/api/user/login`,
       {
         email: user.email,
         // given_name: user.given_name,
         // family_name: user.family_name,
       },
     );
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("API 요청 에러:", error);
