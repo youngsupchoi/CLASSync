@@ -11,9 +11,10 @@ import SummarySection from "../components/SummarySection";
 import WriteNoteComponent from "../components/WriteNoteComponent";
 import { NotionLoadingComponent } from "../components/notePage/NotionLoadingComponent";
 import RecordComponent from "../components/RecordComponent";
+import { WebSocketComponent } from "../components/test4";
 
 export default function NoteCreatePage() {
-  const { classId } = useParams();
+  const { classId = "1" } = useParams();
 
   const [noteData, setNoteData] = useRecoilState(noteDataAtom);
   const [createNoteData, setCreateNoteData] =
@@ -60,6 +61,7 @@ export default function NoteCreatePage() {
   // if (!note) {
   //   return <div>Note not found</div>;
   // }
+  const userId = localStorage.getItem("CLASSync_uid") || "1";
 
   return (
     <div className="relative flex h-full min-h-screen flex-col">
@@ -73,7 +75,11 @@ export default function NoteCreatePage() {
             <u className="text-sm font-semibold text-gray-900">수업 스크립트</u>
           </div>
           <div className="flex flex-1 items-center justify-center">
-            <RecordComponent />
+            <WebSocketComponent
+              classId={classId}
+              userId={userId}
+              className={createNoteData.class_name}
+            />
           </div>
         </div>
         <div className="flex w-1/2 flex-col border border-gray-200">

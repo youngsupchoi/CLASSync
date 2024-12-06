@@ -1,56 +1,16 @@
 // src/components/RecordComponent.tsx
-import React, { useEffect } from "react";
-import { AudioService } from "../components/test"; // AudioService 경로에 맞게 수정
+import React, { useEffect, useRef } from "react";
 import Lottie from "lottie-react";
 import RecordingGif from "../assets/animations/recording_animation.json";
 import { Button } from "flowbite-react";
 import { WS_URL } from "../config/websocket";
+import { WebSocketComponent } from "./test4";
 
 const RecordComponent: React.FC = () => {
-  const audioService = new AudioService();
-
-  useEffect(() => {
-    const classId = "class123";
-    const userId = "user456";
-    let isComponentMounted = true;
-
-    const handleConnectionChange = (connected: boolean) => {
-      if (isComponentMounted) {
-        console.log("WebSocket 연결 상태:", connected);
-      }
-    };
-
-    const handleTranslatedMessage = (message: string) => {
-      if (isComponentMounted) {
-        console.log("번역된 메시지:", message);
-      }
-    };
-
-    audioService.setTranslationCallback(handleTranslatedMessage);
-
-    audioService
-      .connect(WS_URL, handleConnectionChange)
-      .then(() => {
-        if (isComponentMounted) {
-          return audioService.startRecording(classId, userId);
-        }
-      })
-      .catch((error) => {
-        if (isComponentMounted) {
-          console.error("오류 발생:", error);
-        }
-      });
-
-    return () => {
-      isComponentMounted = false;
-      audioService.stopRecording();
-      audioService.disconnect();
-    };
-  }, []);
-
   return (
     <div className="flex flex-row items-center self-center">
-      <Lottie
+      <WebSocketComponent />
+      {/* <Lottie
         style={{ width: "80px", height: "80px" }}
         animationData={RecordingGif}
         loop={false}
@@ -62,7 +22,7 @@ const RecordComponent: React.FC = () => {
         </div>
         <div className="flex flex-row items-center rounded-lg bg-gray-100 p-2">
           <div className="mr-4 w-14 text-sm font-semibold text-gray-900">
-            {/* 녹음 시간 표시 로직 추가 가능 */}
+            
           </div>
           <div className="flex flex-row">
             <Button
@@ -77,7 +37,7 @@ const RecordComponent: React.FC = () => {
                   },
                 },
               }}
-              onClick={() => audioService.stopRecording()}
+              
             >
               녹음 취소
             </Button>
@@ -93,13 +53,14 @@ const RecordComponent: React.FC = () => {
                   },
                 },
               }}
-              onClick={() => audioService.disconnect()}
+            
             >
               녹음 종료
             </Button>
+            <WebSocketComponent />
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
