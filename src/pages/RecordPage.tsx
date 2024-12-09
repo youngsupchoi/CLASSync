@@ -4,20 +4,19 @@ import { noteDataAtom } from "../recoil/noteDataAtom";
 import {
   quizAtom,
   recordAtom,
+  recordDetailAtom,
   summaryAtom,
   transcriptAtom,
 } from "../recoil/recordDataAtoms";
-import NotionSection from "../components/notePage/NotionSection";
-
-import NotePageHeader from "../components/notePage/NotePageHeader";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import NoteCreatePageHeader from "../components/header/NoteCreatePageHeader";
-import SummarySection from "../components/SummarySection";
-import WriteNoteComponent from "../components/WriteNoteComponent";
 import { NotionLoadingComponent } from "../components/notePage/NotionLoadingComponent";
-import RecordComponent from "../components/RecordComponent";
 import { Button } from "flowbite-react";
+import { getRecordDetail } from "../api/getRecordDetail";
+import { getRecordSummary } from "../api/getRecordSummary";
+import { getRecordQuiz } from "../api/getRecordQuiz";
+import { createSummary } from "../api/createSummary";
+import { createQuiz } from "../api/createQuiz";
 
 export default function RecordPage() {
   const { recordingId } = useParams();
@@ -25,56 +24,40 @@ export default function RecordPage() {
   const [summary, setSummary] = useRecoilState(summaryAtom);
   const [noteData, setNoteData] = useRecoilState(noteDataAtom);
   const [recordData, setRecordData] = useRecoilState(recordAtom);
+  const [recordDetailData, setRecordDetailData] =
+    useRecoilState(recordDetailAtom);
   const [selectedTab, setSelectedTab] = useState("summary");
   const [transcript, setTranscript] = useRecoilState(transcriptAtom);
   useEffect(() => {
     console.log("렌더링 시도:", { recordingId });
-    const fetchMessages = async () => {
-      if (!noteData.conversation_id) return;
-      try {
-        console.log(
-          "Fetching messages for conversation_id:",
-          noteData.conversation_id,
-        );
-        const response = await axios.get(
-          `/conversation/messages/${noteData.conversation_id}`,
-        );
-        const formattedGptData = response.data.reduce(
-          (acc: any, curr: any, index: any, array: any) => {
-            if (index % 2 === 0) {
-              acc.push({
-                question: curr.message_content || "No question provided",
-                answer:
-                  array[index + 1]?.message_content || "No answer provided",
-              });
-            }
-            return acc;
-          },
-          [],
-        );
+    getRecordDetail(Number(recordingId)).then((response) => {
+      setRecordDetailData(response);
+    });
+  }, [recordingId, setRecordDetailData]);
 
-        setNoteData((prevData) => ({
-          ...prevData,
-          gptData: formattedGptData,
-        }));
-      } catch (error) {
-        console.error("Failed to fetch messages:", error);
-      }
-    };
+  useEffect(() => {
+    getRecordSummary(Number(recordingId)).then((response) => {
+      setSummary(response);
+    });
+  }, [recordingId, setSummary]);
 
-    fetchMessages();
-  }, [noteData.conversation_id, setNoteData]);
-  const pageId = noteData.notion_page_id;
-
-  // if (!note) {
-  //   return <div>Note not found</div>;
-  // }
+  useEffect(() => {
+    getRecordQuiz(Number(recordingId)).then((response) => {
+      console.log("1222🚀 ~ getRecordQuiz ~ response:", response);
+      setQuiz(response);
+    });
+  }, [recordingId, setQuiz]);
 
   return (
     <div className="relative flex h-full min-h-screen flex-col">
       <NoteCreatePageHeader
-        className={recordData.classTitle}
-        title={recordData.recordingTitle}
+        className={recordData[0].classTitle}
+        title={recordData[0].recordingTitle}
+        onClick={() => {
+          console.log("AI 생성 클릭");
+          createSummary(Number(recordingId));
+          createQuiz(Number(recordingId));
+        }}
       />
       <div className="flex flex-1">
         <div className="flex h-[calc(100vh-64px)] w-1/2 flex-col border border-gray-200">
@@ -82,7 +65,7 @@ export default function RecordPage() {
             <u className="text-sm font-semibold text-gray-900">수업 스크립트</u>
           </div>
           <div className="flex-1 overflow-y-auto p-4 [&::-webkit-scrollbar]:hidden">
-            {transcript.length === 0 ? (
+            {recordDetailData.transcripts.length === 0 ? (
               <div className="flex h-full items-center justify-center">
                 <div className="rounded-lg bg-gray-50 p-8 text-center shadow-sm">
                   <p className="text-gray-600">
@@ -99,7 +82,7 @@ export default function RecordPage() {
                 </div>
               </div>
             ) : (
-              transcript.map((item, index) => (
+              recordDetailData.transcripts.map((item, index) => (
                 <div key={index} className="mb-8 flex flex-col">
                   <div className="mb-2 mr-4 w-16 rounded-md bg-gray-100 px-2 py-1 text-center text-sm text-gray-400">
                     {item.timeStamp}
@@ -136,7 +119,7 @@ export default function RecordPage() {
             </span>
           </div>
           {selectedTab === "summary" && summary.length === 0 ? (
-            <NotionLoadingComponent created_at={recordData.recordedAt} />
+            <NotionLoadingComponent created_at={recordData[0].recordedAt} />
           ) : selectedTab === "summary" ? (
             <div className="flex flex-1 flex-col overflow-y-auto p-4">
               {summary.map((item, index) => (
@@ -160,7 +143,7 @@ export default function RecordPage() {
               ))}
             </div>
           ) : selectedTab === "quiz" && quiz.length === 0 ? (
-            <NotionLoadingComponent created_at={recordData.recordedAt} />
+            <NotionLoadingComponent created_at={recordData[0].recordedAt} />
           ) : (
             <div className="flex flex-1 flex-col overflow-y-auto p-4">
               {quiz.map((item, index) => (

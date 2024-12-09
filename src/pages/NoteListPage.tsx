@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Table, Button } from "flowbite-react";
 import { HiOutlineDocumentText } from "react-icons/hi";
 import { getAllRecordForClass } from "../api/getAllRecordForClass";
+import { getRecordDetail } from "../api/getRecordDetail";
+import { recordAtom, recordDetailAtom } from "../recoil/recordDataAtoms";
+import { useRecoilState } from "recoil";
 
 interface Recording {
   recordingId: number;
@@ -19,7 +22,8 @@ const NoteListPage = () => {
     classId: string;
     classTitle: string;
   }>();
-  const [recordings, setRecordings] = useState<Recording[]>([]);
+  // const [recordings, setRecordings] = useState<Recording[]>([]);
+  const [recordings, setRecordings] = useRecoilState(recordAtom);
 
   useEffect(() => {
     getAllRecordForClass(Number(classId)).then((data) => {
@@ -27,6 +31,10 @@ const NoteListPage = () => {
     });
   }, [classId]);
 
+  // const [recordData, setRecordData] = useRecoilState(recordAtom);
+  const [recordDetailData, setRecordDetailData] =
+    useRecoilState(recordDetailAtom);
+  const navigate = useNavigate();
   // {
   //   recordingId: 1,
   //   recordingTitle: "2024-11-27T23:22:12.822536 녹음",
@@ -77,17 +85,17 @@ const NoteListPage = () => {
               <Table.Cell className="w-8 pr-4">
                 <HiOutlineDocumentText className="h-7 w-7 self-center text-gray-500" />
               </Table.Cell>
-              <Table.Cell className="whitespace-nowrap pl-2 font-semibold text-gray-900 dark:text-white">
+              <Table.Cell className="max-w-[400px] whitespace-normal pl-2 font-semibold text-gray-900 dark:text-white">
                 <div>
                   <p className="text-base font-semibold text-gray-900">
                     {recording.recordingTitle}
                   </p>
-                  <p className="mt-1 text-sm text-gray-500">
+                  <p className="mt-1 truncate text-sm text-gray-500">
                     {recording.preTranscript}
                   </p>
                 </div>
               </Table.Cell>
-              <Table.Cell>
+              <Table.Cell className="max-w-[150px]">
                 <span className="inline-flex items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-sm font-medium text-purple-800 dark:bg-purple-900 dark:text-purple-300">
                   {recording.classTitle}
                 </span>
@@ -106,6 +114,28 @@ const NoteListPage = () => {
                     size="xs"
                     gradientDuoTone="purpleToBlue"
                     className="whitespace-nowrap"
+                    // onClick={() => {
+                    //   getRecordDetail(recording.recordingId).then(
+                    //     (response) => {
+                    //       if (response.data) {
+                    //         console.log(
+                    //           "🚀 ~ getRecordDetail ~ response:",
+                    //           response.data,
+                    //         );
+                    //         setRecordDetailData({
+                    //           recordingId: response.data.recordingId,
+                    //           recordingTitle: response.data.recordingTitle,
+                    //           classId: response.data.classId,
+                    //           classTitle: response.data.classTitle,
+                    //           transcripts: response.data.transcripts,
+                    //         });
+                    //       }
+                    // if (response.data) {
+                    //   navigate(`/record/${recording.recordingId}`);
+                    // }
+                    //   },
+                    // );
+                    // }}
                   >
                     <HiOutlineDocumentText className="mr-2 h-4 w-4" />
                     노트 열기

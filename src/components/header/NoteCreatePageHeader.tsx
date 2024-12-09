@@ -7,9 +7,11 @@ import { isShareFeedbackModalOpenAtom } from "../../recoil/modalAtoms";
 const NoteCreatePageHeader = ({
   className,
   title,
+  onClick,
 }: {
   className: string;
   title: string;
+  onClick?: () => void;
 }) => {
   const setIsShareFeedbackModalOpen = useSetRecoilState(
     isShareFeedbackModalOpenAtom,
@@ -21,6 +23,14 @@ const NoteCreatePageHeader = ({
         <span> /</span>
         <span className="text-gray-900">{title}</span>
       </div>
+      {onClick && (
+        <button
+          onClick={onClick}
+          className="flex items-center rounded-md bg-lime-400 p-2 px-4 text-black hover:bg-lime-500"
+        >
+          AI Generate
+        </button>
+      )}
     </div>
   );
 };
