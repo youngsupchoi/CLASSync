@@ -141,21 +141,37 @@ export const WebSocketComponent: React.FC<Props> = ({
     }
   }
 
+  let audioChunks: string[] = []; // 오디오 데이터를 저장할 배열
+  const chunkThreshold = 16; // 전송 전에 모아야 할 청크의 개수
+
   function sendAudioData(audioData: string, classId: string, userId: string) {
-    if (stompClient && stompClient.connected) {
-      stompClient.send(
-        "/app/voice",
-        {},
-        JSON.stringify({
-          audioData: audioData,
-          classId: classId,
-          userId: userId,
-        }),
-      );
-    } else {
-      console.warn(
-        "WebSocket이 연결되지 않아 오디오 데이터를 보낼 수 없습니다.",
-      );
+    // 청크를 배열에 추가
+    audioChunks.push(audioData);
+
+    // 청크가 일정 개수 이상 모였을 때 병합하여 서버로 전송
+    if (audioChunks.length >= chunkThreshold) {
+      const combinedAudioData = audioChunks.join(""); // 모든 청크를 하나로 병합
+      audioChunks = []; // 배열 초기화
+
+      if (stompClient && stompClient.connected) {
+        stompClient.send(
+          "/app/voice",
+          {},
+          JSON.stringify({
+            audioData: combinedAudioData,
+            classId: classId,
+            userId: userId,
+          }),
+        );
+        console.log(
+          "병합된 청크 전송 완료, 데이터 길이:",
+          combinedAudioData.length,
+        );
+      } else {
+        console.warn(
+          "WebSocket이 연결되지 않아 오디오 데이터를 보낼 수 없습니다.",
+        );
+      }
     }
   }
 
